@@ -13,38 +13,38 @@ const FEATURE_NAMES = [
 ] as const;
 
 // Ridge regression coefficients (trained on 925 tweets, log-scale targets)
+// BETA_VIEWS: 31 coefficients matching FEATURE_NAMES[0..30]
 const BETA_VIEWS: number[] = [
-   2.2194,  // log_followers — STRONGEST predictor
-   0.2503,  // verified
-  -0.0826,  // hour_sin
-  -0.0606,  // hour_cos
-   0.1376,  // day_sin
-   0.2363,  // day_cos
-  -0.1378,  // is_weekend
-  -0.0486,  // is_prime
-  -0.0901,  // is_late_night
-  -0.3575,  // is_early_morning — NEGATIVE (6-7am UTC is bad)
-  -0.0732,  // is_lunch
-   0.1146,  // is_best_hour (6-7am, 10am, 3pm, 5pm, 11pm UTC)
-   0.2037,  // is_original
-  -0.1941,  // is_reply
-   0.1464,  // is_quote
-  -0.4201,  // has_workflow — NEGATIVE (oversaturated term)
-  -0.3662,  // has_ai_agent — NEGATIVE (oversaturated term)
-   0.2937,  // has_llm — POSITIVE (specific, valuable)
-  -0.2697,  // has_niche — NEGATIVE (composite of oversaturated terms)
-  -0.2695,  // has_link — NEGATIVE
-  -0.2553,  // has_mention — NEGATIVE
-   0.2503,  // verified
-   0.1028,  // has_launch
-   0.0576,  // has_opinion
-  -0.0315,  // has_study
-  -0.0373,  // has_dev
-   0.0674,  // text_len
-   0.1276,  // word_count
-  -0.2156,  // has_hashtag — NEGATIVE (overuse penalized)
-  -0.0007,  // has_thread
-  -0.0136,  // has_media
+   2.2194,  // [0]  log_followers — STRONGEST predictor
+   0.2503,  // [1]  verified
+  -0.0826,  // [2]  hour_sin
+  -0.0606,  // [3]  hour_cos
+   0.1376,  // [4]  day_sin
+   0.2363,  // [5]  day_cos
+  -0.1378,  // [6]  is_weekend
+  -0.0486,  // [7]  is_prime
+  -0.0901,  // [8]  is_late_night
+  -0.3575,  // [9]  is_early_morning — NEGATIVE (6-7am UTC is bad)
+  -0.0732,  // [10] is_lunch
+   0.1146,  // [11] is_best_hour (6-7am, 10am, 3pm, 5pm, 11pm UTC)
+   0.2037,  // [12] is_original
+  -0.1941,  // [13] is_reply
+   0.1464,  // [14] is_quote
+  -0.4201,  // [15] has_workflow — NEGATIVE (oversaturated term)
+  -0.3662,  // [16] has_ai_agent — NEGATIVE (oversaturated term)
+   0.2937,  // [17] has_llm — POSITIVE (specific, valuable)
+  -0.2697,  // [18] has_niche — NEGATIVE (composite of oversaturated terms)
+  -0.2695,  // [19] has_link — NEGATIVE
+  -0.2553,  // [20] has_mention — NEGATIVE
+   0.1028,  // [21] has_launch
+   0.0576,  // [22] has_opinion
+  -0.0315,  // [23] has_study
+  -0.0373,  // [24] has_dev
+   0.0674,  // [25] text_len
+   0.1276,  // [26] word_count
+  -0.2156,  // [27] has_hashtag — NEGATIVE (overuse penalized)
+  -0.0007,  // [28] has_thread
+  -0.0136,  // [29] has_media
 ];
 const INTERCEPT_VIEWS = 10.4676;
 
