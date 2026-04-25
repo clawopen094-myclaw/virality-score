@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback } from 'react';
 import { score, type ScoreResult, type PredictionInput } from '@/lib/virality-v3';
 
 // ─── Design tokens (Cinematic Dark — RunwayML inspired) ──────────────────────
@@ -384,17 +384,22 @@ export default function Home() {
             </label>
             <input
               type="range"
-              min={10}
+              min={0}
               max={5_000_000}
-              step={followers < 1000 ? 10 : followers < 10000 ? 100 : followers < 100000 ? 500 : followers < 1000000 ? 1000 : 5000}
+              step={1}
               value={followers}
               onChange={e => setFollowers(Number(e.target.value))}
               style={{ width: '100%', accentColor: TOKENS.magenta }}
             />
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: TOKENS.textDim, marginTop: 4 }}>
-              <span>10</span>
+              <span>0</span>
               <span>5M</span>
             </div>
+            {followers === 0 && (
+              <p style={{ margin: '8px 0 0', fontSize: 11, color: '#f59e0b', textAlign: 'center' }}>
+                ⚠ New account — predictions are highly unreliable below 100 followers
+              </p>
+            )}
           </div>
 
           {/* Verified + datetime row */}

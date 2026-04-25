@@ -123,6 +123,8 @@ function extractRaw(
   isReply: boolean,
   isQuote: boolean
 ): number[] {
+  // Floor at 1 to avoid log(0) = -Infinity; minimum 10 for model validity
+  const followers = Math.max(authorFollowers, 10);
   const tLower = text.toLowerCase();
   const isOriginal = (!isReply && !isQuote) ? 1 : 0;
 
@@ -136,7 +138,7 @@ function extractRaw(
   const hasDev = /api|code|cursor|replit|vscode|github/i.test(text) ? 1 : 0;
 
   return [
-    Math.log1p(authorFollowers),             // [0] log_followers
+    Math.log1p(followers),                      // [0] log_followers
     authorBlueVerified ? 1 : 0,              // [1] verified
     Math.sin(2 * Math.PI * hour / 24),       // [2] hour_sin
     Math.cos(2 * Math.PI * hour / 24),       // [3] hour_cos
@@ -211,12 +213,11 @@ function scoreImpl(
   // Extract raw features (no standardization)
   const raw = extractRaw(text, authorFollowers, authorBlueVerified, hour, dayIdx, isReply, isQuote);
 
-  // Predict log(views): dot product of raw features and beta
+  // Predict log(views): dot product of raw features and beta (all 30 features)
   let predLog = INTERCEPT;
-  for (let i = 0; i < BETA_24.length; i++) {
-    predLog += raw[i] * BETA_24[i];
+  for (let i = 0; i < BETA_VIEWS.length; i++) {
+    predLog += raw[i] * BETA_VIEWS[i];
   }
-  // New features (23-29) get 0 contribution since their beta is 0
 
   const predViews = Math.expm1(Math.max(0, predLog));
 
