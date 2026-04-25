@@ -508,9 +508,6 @@ export default function Home() {
                     {result.predicted_views_fmt}
                   </p>
                   <p style={{ fontSize: 13, color: TOKENS.textMuted, margin: '0 0 10px 0' }}>predicted impressions</p>
-                  <p style={{ fontSize: 22, fontWeight: 700, margin: 0, color: TOKENS.text }}>
-                    ≈ {result.predicted_likes_fmt} <span style={{ fontSize: 13, fontWeight: 400, color: TOKENS.textMuted }}>likes</span>
-                  </p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <Gauge score={result.score} tier={result.tier as keyof typeof TIER_CONFIG} />

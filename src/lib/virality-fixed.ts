@@ -1,5 +1,5 @@
 /**
- * Twitter Virality Prediction — v4 (FIXED)
+ * Twitter Virality Prediction — FIXED v4
  * 
  * Uses v2's proven raw-features approach (no standardization, intercept=0)
  * with the same 24-feature beta that was validated against Python model.
@@ -190,7 +190,6 @@ export interface PredictionInput {
   is_quote?: boolean;
 }
 
-// Positional-args implementation
 function scoreImpl(
   text: string,
   authorFollowers: number,
@@ -216,7 +215,6 @@ function scoreImpl(
   for (let i = 0; i < BETA_24.length; i++) {
     predLog += raw[i] * BETA_24[i];
   }
-  // New features (23-29) get 0 contribution since their beta is 0
 
   const predViews = Math.expm1(Math.max(0, predLog));
 
@@ -265,7 +263,7 @@ function scoreImpl(
     recs.push("Quote tweets have mixed results. Original tweets tend to perform better.");
   if (hour !== 14 && hour !== 15 && !([18,19,20,21].includes(hour)))
     recs.push(`Posting at ${hour}:00 UTC is suboptimal. Best: 14-15 UTC (US morning) or 18-21 UTC (US evening).`);
-  
+
   const tLower = text.toLowerCase();
   const missing: string[] = [];
   if (!anyKw(tLower, ['llm','gpt','claude','agent','automation','workflow','n8n','zapier']))
@@ -276,7 +274,7 @@ function scoreImpl(
     missing.push("fewer hashtags (1 max — hashtag overuse is penalized)");
   if (text.includes('@') && (text.split('@').length - 1) > 2)
     missing.push("fewer @mentions (max 2)");
-  
+
   if (missing.length > 0)
     recs.push(`Adding ${missing.join(', ')} could improve reach.`);
   if (recs.length === 0)
@@ -302,41 +300,15 @@ function scoreImpl(
   };
 }
 
-// Overload dispatcher — accepts PredictionInput object
-export function score(input: PredictionInput): ScoreResult;
-export function score(
-  text: string,
-  authorFollowers: number,
-  authorBlueVerified?: boolean,
-  createdAt?: string,
-  isReply?: boolean,
-  isQuote?: boolean
-): ScoreResult;
-export function score(
-  textOrInput: string | PredictionInput,
-  authorFollowers?: number,
-  authorBlueVerified?: boolean,
-  createdAt?: string,
-  isReply?: boolean,
-  isQuote?: boolean
-): ScoreResult {
-  if (typeof textOrInput === 'object') {
-    return scoreImpl(
-      textOrInput.text,
-      textOrInput.author_followers,
-      textOrInput.author_blue_verified ?? false,
-      textOrInput.created_at,
-      textOrInput.is_reply ?? false,
-      textOrInput.is_quote ?? false
-    );
-  }
+// Overload dispatcher
+export function score(input: PredictionInput): ScoreResult {
   return scoreImpl(
-    textOrInput,
-    authorFollowers ?? 0,
-    authorBlueVerified ?? false,
-    createdAt,
-    isReply ?? false,
-    isQuote ?? false
+    input.text,
+    input.author_followers,
+    input.author_blue_verified ?? false,
+    input.created_at,
+    input.is_reply ?? false,
+    input.is_quote ?? false
   );
 }
 
