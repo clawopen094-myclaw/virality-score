@@ -377,21 +377,45 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Follower slider */}
+          {/* Follower slider + manual input */}
           <div style={{ marginBottom: 20 }}>
             <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: TOKENS.textMuted, marginBottom: 10, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
-              Followers — <span style={{ color: TOKENS.magenta, fontFamily: 'monospace' }}>{followers.toLocaleString()}</span>
+              Followers
             </label>
-            <input
-              type="range"
-              min={0}
-              max={5_000_000}
-              step={1}
-              value={followers}
-              onChange={e => setFollowers(Number(e.target.value))}
-              style={{ width: '100%', accentColor: TOKENS.magenta }}
-            />
-            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: TOKENS.textDim, marginTop: 4 }}>
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 10 }}>
+              <input
+                type="number"
+                min={0}
+                max={5_000_000}
+                value={followers}
+                onChange={e => setFollowers(Math.max(0, Math.min(5_000_000, Number(e.target.value))))}
+                style={{
+                  flex: '0 0 140px',
+                  padding: '10px 14px',
+                  background: TOKENS.bgAlt,
+                  border: `1px solid ${TOKENS.border}`,
+                  borderRadius: 10,
+                  color: TOKENS.magenta,
+                  fontSize: 14,
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  outline: 'none',
+                  textAlign: 'center',
+                }}
+                onFocus={e => e.target.style.borderColor = TOKENS.magenta}
+                onBlur={e => e.target.style.borderColor = TOKENS.border}
+              />
+              <input
+                type="range"
+                min={0}
+                max={5_000_000}
+                step={1}
+                value={followers}
+                onChange={e => setFollowers(Number(e.target.value))}
+                style={{ flex: 1, accentColor: TOKENS.magenta }}
+              />
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 11, color: TOKENS.textDim }}>
               <span>0</span>
               <span>5M</span>
             </div>
